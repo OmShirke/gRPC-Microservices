@@ -33,7 +33,7 @@ message GetAccountsResponse{
     repeated Account accounts=1;
 }
 
-service AccontService{
+service AccountService{
     rpc PostAccount(PostAccountRequest) returns (PostAccountResponse){
 
     }

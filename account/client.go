@@ -8,7 +8,7 @@ import (
 )
 
 type Client struct {
-	conn    *grpc.Clientconn
+	conn    *grpc.ClientConn
 	service pb.AccountServiceClient
 }
 
@@ -17,7 +17,7 @@ func NewClient(url string) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	c := pb.NewAccontServiceClient(conn)
+	c := pb.NewAccountServiceClient(conn)
 	return &Client{conn, c}, nil
 }
 
@@ -56,9 +56,9 @@ func (c *Client) GetAccount(ctx context.Context, id string) (*Account, error) {
 func (c *Client) GetAccounts(ctx context.Context, skip uint64, take uint64) ([]Account, error) {
 	r, err := c.service.GetAccounts(
 		ctx,
-		&pb.GetAccountRequest{
-			skip: skip,
-			take: take,
+		&pb.GetAccountsRequest{
+			Skip: skip,
+			Take: take,
 		},
 	)
 	if err != nil {
