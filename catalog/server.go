@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/OmShirke/gRPC-Microservices/account/pb"
+	"github.com/OmShirke/gRPC-Microservices/catalog/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -30,8 +30,8 @@ func ListenGRPC(s Service, port int) error {
 	return serv.Serve(lis)
 }
 
-func PostProduct(ctx context.Context, r *pb.PostProductRequest) *pb.PostProductResponse {
-	P, err := s.service.PostProduct(ctx, r.Name, r.Description, r.Price)
+func (s *grpcServer) PostProduct(ctx context.Context, r *pb.PostProductRequest) (*pb.PostProductResponse, error) {
+	p, err := s.service.PostProduct(ctx, r.Name, r.Description, r.Price)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -44,8 +44,8 @@ func PostProduct(ctx context.Context, r *pb.PostProductRequest) *pb.PostProductR
 	}}, nil
 }
 
-func GetProduct(ctx context.Context, r *pb.GetProductRequest) *pb.GetProductResponse {
-	P, err := s.service.GetProduct(ctx, r.Id)
+func (s *grpcServer) GetProduct(ctx context.Context, r *pb.GetProductRequest) (*pb.GetProductResponse, error) {
+	p, err := s.service.GetProduct(ctx, r.Id)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -58,13 +58,13 @@ func GetProduct(ctx context.Context, r *pb.GetProductRequest) *pb.GetProductResp
 	}}, nil
 }
 
-func GetProducts(ctx context.Context, r *pb.GetProductsRequest) *pb.GetProductsResponse {
+func (s *grpcServer) GetProducts(ctx context.Context, r *pb.GetProductsRequest) (*pb.GetProductsResponse, error) {
 	var res []Product
 	var err error
-	if e.Query != "" {
+	if r.Query != "" {
 		res, err = s.Service.SearchProducts(ctx, r.Query, r.Skip, r.Take)
 	} else if len(r.Ids) != 0 {
-		res.err = s.service.GetProductsByIDs(ctx, r.Ids)
+		res, err = s.service.GetProductsByIDs(ctx, r.Ids)
 	} else {
 		res, err = s.service.GetProducts(ctx, r.Skip, r.Take)
 	}

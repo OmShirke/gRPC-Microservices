@@ -1,13 +1,32 @@
 package main
 
 import (
-	_ "embed"
 	"fmt"
+	"log"
+	"time"
+
+	"github.com/OmShirke/gRPC-Microservices/catalog"
+	"github.com/kelseyhightower/envconfig"
+	"github.com/tinrab/retry"
 )
 
-//go:embed hello.txt
-var data string
+type Config struct{
+	DatabaseURL string `envconfig:"DATABASE_URL"`
+}
 
 func main() {
-	fmt.Println(data)
+	var cfg Config
+	err:= envconfig.Process("",&cfg)
+	if err !=nil{
+		log.Println(err)
+	}
+
+	var r.catalog.Repo
+	retry.ForeverSleep(2*time.Second, func(_ int) (err error){
+		r,err=catalog.NewElasticRepo(cfg.DatabaseURL)
+	})
+	defer r.Close()
+	log.Println("Listening on port 8080...")
+	s:= catalog.NewService(r)
+	log.Fatal(catalog.ListenGRPC(s,8080))
 }
