@@ -44,7 +44,6 @@ func NewElasticRepo(url string) (Repo, error) {
 }
 
 func (r *elasticRepo) Close() {
-	r.Close()
 }
 
 func (r *elasticRepo) PutProduct(ctx context.Context, p Product) error {
