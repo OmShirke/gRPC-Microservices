@@ -30,7 +30,7 @@ const (
 type CatalogServiceClient interface {
 	PostProduct(ctx context.Context, in *PostProductRequest, opts ...grpc.CallOption) (*PostProductResponse, error)
 	GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*GetProductResponse, error)
-	GetProducts(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*GetProductsResponse, error)
+	GetProducts(ctx context.Context, in *GetProductsRequest, opts ...grpc.CallOption) (*GetProductsResponse, error)
 }
 
 type catalogServiceClient struct {
@@ -61,7 +61,7 @@ func (c *catalogServiceClient) GetProduct(ctx context.Context, in *GetProductReq
 	return out, nil
 }
 
-func (c *catalogServiceClient) GetProducts(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*GetProductsResponse, error) {
+func (c *catalogServiceClient) GetProducts(ctx context.Context, in *GetProductsRequest, opts ...grpc.CallOption) (*GetProductsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetProductsResponse)
 	err := c.cc.Invoke(ctx, CatalogService_GetProducts_FullMethodName, in, out, cOpts...)
@@ -77,7 +77,7 @@ func (c *catalogServiceClient) GetProducts(ctx context.Context, in *GetProductRe
 type CatalogServiceServer interface {
 	PostProduct(context.Context, *PostProductRequest) (*PostProductResponse, error)
 	GetProduct(context.Context, *GetProductRequest) (*GetProductResponse, error)
-	GetProducts(context.Context, *GetProductRequest) (*GetProductsResponse, error)
+	GetProducts(context.Context, *GetProductsRequest) (*GetProductsResponse, error)
 	mustEmbedUnimplementedCatalogServiceServer()
 }
 
@@ -155,7 +155,7 @@ func _CatalogService_GetProduct_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _CatalogService_GetProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetProductRequest)
+	in := new(GetProductsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ func _CatalogService_GetProducts_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: CatalogService_GetProducts_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CatalogServiceServer).GetProducts(ctx, req.(*GetProductRequest))
+		return srv.(CatalogServiceServer).GetProducts(ctx, req.(*GetProductsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

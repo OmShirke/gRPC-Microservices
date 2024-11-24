@@ -9,7 +9,7 @@ import (
 
 type Client struct {
 	conn    *grpc.ClientConn
-	service pb.catalogServiceClient
+	service pb.CatalogServiceClient
 }
 
 func NewClient(url string) (*Client, error) {
@@ -50,7 +50,7 @@ func (c *Client) GetProduct(ctx context.Context, id string) (*Product, error) {
 	r, err := c.service.GetProduct(
 		ctx,
 		&pb.GetProductRequest{
-			ID: id,
+			Id: id,
 		},
 	)
 	if err != nil {
@@ -64,7 +64,7 @@ func (c *Client) GetProduct(ctx context.Context, id string) (*Product, error) {
 	}, nil
 }
 
-func (c *Client) GetProducts(ctx context.Context, skip uint64, take uint64, ids []string, query string) (*Product, error) {
+func (c *Client) GetProducts(ctx context.Context, skip uint64, take uint64, ids []string, query string) ([]Product, error) {
 	r, err := c.service.GetProducts(
 		ctx,
 		&pb.GetProductsRequest{

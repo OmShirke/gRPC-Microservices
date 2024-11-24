@@ -40,7 +40,7 @@ func NewElasticRepo(url string) (Repo, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &elasticRepo(client), nil
+	return &elasticRepo{client}, nil
 }
 
 func (r *elasticRepo) Close() {
