@@ -1,13 +1,36 @@
+# Build Stage
 FROM golang:1.13-alpine3.11 AS build
+
+# Install necessary build dependencies
 RUN apk --no-cache add gcc g++ make ca-certificates
+
+# Set the working directory
 WORKDIR /go/src/github.com/OmShirke/gRPC-Microservices
+
+# Copy dependency management files
 COPY go.mod go.sum ./
+
+# Ensure dependencies are downloaded
+RUN go mod download
+
+# Copy application-specific files
 COPY vendor vendor
 COPY catalog catalog
-RUN GO111MODULE=on go build -mod vendor -o /go/bin/app ./catalog/cmd/catalog
 
+# Build the application binary
+RUN GO111MODULE=on go build -mod vendor -o /go/bin/catalog-service ./catalog/cmd/catalog
+
+# Runtime Stage
 FROM alpine:3.11
+
+# Set the working directory
 WORKDIR /usr/bin
-COPY --from=build /go/bin .
+
+# Copy the compiled binary from the build stage
+COPY --from=build /go/bin/catalog-service .
+
+# Expose the required port
 EXPOSE 8080
-CMD ["app"]
+
+# Run the service
+CMD ["catalog-service"]
