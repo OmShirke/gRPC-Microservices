@@ -28,11 +28,7 @@ func (c *Client) Close() {
 	c.conn.Close()
 }
 
-func (c *Client) PostOrder(
-	ctx context.Context,
-	accountID string,
-	products []OrderedProduct,
-) (*Order, error) {
+func (c *Client) PostOrder(ctx context.Context, accountID string, products []OrderedProduct) (*Order, error) {
 	protoProducts := []*pb.PostOrderRequest_OrderProduct{}
 	for _, p := range products {
 		protoProducts = append(protoProducts, &pb.PostOrderRequest_OrderProduct{
