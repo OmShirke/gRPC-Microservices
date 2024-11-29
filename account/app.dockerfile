@@ -1,5 +1,5 @@
 # Build Stage
-FROM golang:1.20-alpine3.20.3 AS build
+FROM golang:1.20-alpine3.11 AS build
 
 # Install build dependencies
 RUN apk --no-cache add gcc g++ make ca-certificates
@@ -19,7 +19,7 @@ COPY account account
 RUN GO111MODULE=on go build -mod vendor -o /go/bin/account-service ./account/cmd/account
 
 # Runtime Stage
-FROM alpine:3.20.3
+FROM alpine:3.11
 
 # Set the working directory
 WORKDIR /usr/bin
