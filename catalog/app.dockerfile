@@ -1,5 +1,5 @@
 # Build Stage
-FROM golang:1.13-alpine3.11 AS build
+FROM golang:1.13-alpine AS build
 
 # Install necessary build dependencies
 RUN apk --no-cache add gcc g++ make ca-certificates
