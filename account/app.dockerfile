@@ -13,10 +13,10 @@ RUN go mod download
 
 # Copy the vendor and service-specific files
 COPY vendor vendor
-COPY account account
+COPY account accounts
 
 # Build the Go application
-RUN GO111MODULE=on go build -mod vendor -o /go/bin/account-service ./account/cmd/account
+RUN GO111MODULE=on go build -mod vendor -o /go/bin/app ./account/cmd/account
 
 # Runtime Stage
 FROM alpine:3.11
@@ -25,10 +25,10 @@ FROM alpine:3.11
 WORKDIR /usr/bin
 
 # Copy the built binary from the build stage
-COPY --from=build /go/bin/account-service .
+COPY --from=build /go/bin/ .
 
 # Expose the service port
 EXPOSE 8080
 
 # Define the startup command
-CMD ["account-service"]
+CMD ["app"]

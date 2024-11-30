@@ -10,7 +10,7 @@ import (
 )
 
 type Config struct {
-	DatabaseURL string `envconfig:"DATABASE_UR:"`
+	DatabaseURL string `envconfig:"DATABASE_URL"`
 }
 
 func main() {
