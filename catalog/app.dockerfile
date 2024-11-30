@@ -18,7 +18,7 @@ COPY vendor vendor
 COPY catalog catalog
 
 # Build the application binary
-RUN GO111MODULE=on go build -mod vendor -o /go/bin/catalog-service ./catalog/cmd/catalog
+RUN GO111MODULE=on go build -mod vendor -o /go/bin/app ./catalog/cmd/catalog
 
 # Runtime Stage
 FROM alpine:3.11
@@ -27,10 +27,10 @@ FROM alpine:3.11
 WORKDIR /usr/bin
 
 # Copy the compiled binary from the build stage
-COPY --from=build /go/bin/catalog-service .
+COPY --from=build /go/bin/ .
 
 # Expose the required port
 EXPOSE 8080
 
 # Run the service
-CMD ["catalog-service"]
+CMD ["app"]
