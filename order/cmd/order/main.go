@@ -11,7 +11,7 @@ import (
 
 type Config struct {
 	DatabaseURL string `envconfig:"DATABASE_URL"`
-	AcconutURL  string `envconfig:"ACCOUNT_SERVICE_URL"`
+	AccountURL  string `envconfig:"ACCOUNT_SERVICE_URL"`
 	CatalogURL  string `envconfig:"CATALOG_SERVICE_URL"`
 }
 
@@ -33,5 +33,5 @@ func main() {
 	defer r.Close()
 	log.Println("Listening on port 8080...")
 	s := order.NewService(r)
-	log.Fatal(order.ListenGRPC(s, cfg.AcconutURL, cfg.CatalogURL, 8080))
+	log.Fatal(order.ListenGRPC(s, cfg.AccountURL, cfg.CatalogURL, 8080))
 }

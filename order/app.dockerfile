@@ -18,7 +18,7 @@ COPY vendor vendor
 COPY order order
 
 # Build the Go application
-RUN GO111MODULE=on go build -mod vendor -o /go/bin/order-service ./order/cmd/order
+RUN GO111MODULE=on go build -mod vendor -o /go/bin/app ./order/cmd/order
 
 # Runtime Stage
 FROM alpine:3.11
@@ -27,11 +27,11 @@ FROM alpine:3.11
 WORKDIR /usr/bin
 
 # Copy the binary from the build stage
-COPY --from=build /go/bin/order-service .
+COPY --from=build /go/bin/ .
 
 # Expose the service port
 EXPOSE 8080
 
 # Run the application
-CMD ["order-service"]
+CMD ["app"]
 
