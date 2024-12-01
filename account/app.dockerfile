@@ -13,7 +13,7 @@ RUN go mod download
 
 # Copy the vendor and service-specific files
 COPY vendor vendor
-COPY account accounts
+COPY account account
 
 # Build the Go application
 RUN GO111MODULE=on go build -mod vendor -o /go/bin/app ./account/cmd/account
